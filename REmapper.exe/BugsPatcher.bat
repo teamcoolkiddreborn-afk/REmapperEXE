@@ -93,10 +93,16 @@ if /i not "%src:~0,-1%"=="%desktop%\%file%" (
     color 6
     echo [DEPLACEMENT] Dossier en cours de deplacement sur le bureau...
 
-    powershell -Command ^
-        "$src = '%src:~0,-1%'; $dst = '%desktop%\%file%'; $bat = '%bat%'; " ^
-        "Start-Process powershell -ArgumentList \"-NoProfile -Command Start-Sleep 2; Move-Item -Path '$src' -Destination '$dst' -Force; Start-Process '$dst\$bat'\" -WindowStyle Hidden"
+    :: Ecriture du script PS1 dans temp
+    set "ps1=%TEMP%\remapper_move.ps1"
+    (
+        echo Start-Sleep -Seconds 2
+        echo Move-Item -Path '%src:~0,-1%' -Destination '%desktop%\%file%' -Force
+        echo Start-Process '%desktop%\%file%\%bat%'
+        echo Remove-Item -Path $MyInvocation.MyCommand.Path -Force
+    ) > "%TEMP%\remapper_move.ps1"
 
+    powershell -ExecutionPolicy Bypass -WindowStyle Hidden -File "%TEMP%\remapper_move.ps1"
     exit
 )
 
