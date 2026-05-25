@@ -93,16 +93,13 @@ if /i not "%src:~0,-1%"=="%desktop%\%file%" (
     color 6
     echo [DEPLACEMENT] Dossier en cours de deplacement sur le bureau...
 
-    :: Ecriture du script PS1 dans temp
-    set "ps1=%TEMP%\remapper_move.ps1"
-    (
-        echo Start-Sleep -Seconds 2
-        echo Move-Item -Path '%src:~0,-1%' -Destination '%desktop%\%file%' -Force
-        echo Start-Process '%desktop%\%file%\%bat%'
-        echo Remove-Item -Path $MyInvocation.MyCommand.Path -Force
-    ) > "%TEMP%\remapper_move.ps1"
+    :: Ecriture propre du PS1
+    echo Start-Sleep -Seconds 3 > "%TEMP%\remapper_move.ps1"
+    echo Move-Item -Path '%src:~0,-1%' -Destination '%desktop%\%file%' -Force >> "%TEMP%\remapper_move.ps1"
+    echo Start-Process cmd.exe -ArgumentList '/c start "" \"%desktop%\%file%\%bat%\"' >> "%TEMP%\remapper_move.ps1"
 
-    powershell -ExecutionPolicy Bypass -WindowStyle Hidden -File "%TEMP%\remapper_move.ps1"
+    :: Lancement vraiment detache
+    start "" powershell -ExecutionPolicy Bypass -WindowStyle Hidden -File "%TEMP%\remapper_move.ps1"
     exit
 )
 
