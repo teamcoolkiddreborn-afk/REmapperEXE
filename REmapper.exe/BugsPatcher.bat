@@ -89,8 +89,18 @@ set "act=%~dp0"
 if /i not "%act:~0,-1%"=="%desktop%\%file%" (
     color 6
     echo [DEPLACEMENT] Dossier en cours de deplacement sur le bureau...
-    powershell -Command "Move-Item -Path '%~dp0.' -Destination '%desktop%\%file%' -Force"
-    start "" "%desktop%\%file%\%~nx0"
+
+    :: Crée un script temporaire HORS du dossier qui fait le déplacement
+    set "tmpscript=%TEMP%\mover_remapper.bat"
+    (
+        echo @echo off
+        echo timeout /t 1 /nobreak ^>nul
+        echo move "%act:~0,-1%" "%desktop%\%file%"
+        echo start "" "%desktop%\%file%\%~nx0"
+        echo del "%%~f0"
+    ) > "%tmpscript%"
+
+    start "" "%tmpscript%"
     exit
 )
 color 2
