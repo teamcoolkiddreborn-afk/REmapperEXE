@@ -97,5 +97,5 @@ color 2
 echo REmapperEXE --STATUS-- OP
 echo DLL --STATUS-- OP
 echo File --STATUS-- OP
-echo if still doesn t work please contact the support in the discord serveur thanks
+echo if still doesn t work please contact the support in the discord serveur thanks https://discord.gg/6eReDWSGeW
 pause
