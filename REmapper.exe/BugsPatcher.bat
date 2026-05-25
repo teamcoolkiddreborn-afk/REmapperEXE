@@ -83,26 +83,23 @@ if not exist "%~dp0REmapperEXE.exe" (
     color 2
     echo [OK] REmapperEXE.exe deja present
 )
+
 set "desktop=%USERPROFILE%\Desktop"
 set "file=REmapper.exe"
-set "act=%~dp0"
-if /i not "%act:~0,-1%"=="%desktop%\%file%" (
+set "src=%~dp0"
+set "bat=%~nx0"
+
+if /i not "%src:~0,-1%"=="%desktop%\%file%" (
     color 6
     echo [DEPLACEMENT] Dossier en cours de deplacement sur le bureau...
 
-    :: Crée un script temporaire HORS du dossier qui fait le déplacement
-    set "tmpscript=%TEMP%\mover_remapper.bat"
-    (
-        echo @echo off
-        echo timeout /t 1 /nobreak ^>nul
-        echo move "%act:~0,-1%" "%desktop%\%file%"
-        echo start "" "%desktop%\%file%\%~nx0"
-        echo del "%%~f0"
-    ) > "%tmpscript%"
+    powershell -Command ^
+        "$src = '%src:~0,-1%'; $dst = '%desktop%\%file%'; $bat = '%bat%'; " ^
+        "Start-Process powershell -ArgumentList \"-NoProfile -Command Start-Sleep 2; Move-Item -Path '$src' -Destination '$dst' -Force; Start-Process '$dst\$bat'\" -WindowStyle Hidden"
 
-    start "" "%tmpscript%"
     exit
 )
+
 color 2
 echo REmapperEXE --STATUS-- OP
 echo DLL --STATUS-- OP
