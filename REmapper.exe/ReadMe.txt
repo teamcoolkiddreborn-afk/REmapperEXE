@@ -8,4 +8,4 @@ target path is for the file you want RE exemple: C:\Users\USERenvironement\AppDa
 File is in the folder (AppsAdresses) that's for the RE with that information he know what he need to found, exemple for RobloxPlayerBeta.exe the correct file will be Roblox.txt not another.
 
 
-⚠️⚠️IF YOU'R HAVING AN ISSUE START AS ADMIN THE BugsPatcher.BATCH FILE⚠️⚠️
+⚠️⚠️IF YOU'R HAVING AN ISSUE START AS ADMIN THE BugsPatcher FILE⚠️⚠️
